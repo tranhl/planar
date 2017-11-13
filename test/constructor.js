@@ -33,9 +33,33 @@ describe('Planar(grid)', function () {
             [1, '2', { value: 3 }],
             [4, '5', { value: 6 }],
             [7, '8', { value: 9 }]
-        ]
+        ];
     });
 
+    it('should instantiate without modifying the passed grid', function() {
+        assert.deepEqual(new Planar(numberGrid).grid, numberGrid);
+        assert.deepEqual(new Planar(stringGrid).grid, stringGrid);
+        assert.deepEqual(new Planar(objectGrid).grid, objectGrid);
+        assert.deepEqual(new Planar(mixedGrid).grid, mixedGrid);
+    });
+
+    it('should allow bracket syntax to access grid values', function () {
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                assert.deepEqual(new Planar(numberGrid)[i][j], numberGrid[i][j]);
+                assert.deepEqual(new Planar(stringGrid)[i][j], stringGrid[i][j]);
+                assert.deepEqual(new Planar(objectGrid)[i][j], objectGrid[i][j]);
+                assert.deepEqual(new Planar(mixedGrid)[i][j], mixedGrid[i][j]);
+            }
+        }
+    })
+
+    it('should instantiate with the correct width and height', function() {
+        let planar = new Planar(numberGrid);
+        assert.strictEqual(planar.width, 3);
+        assert.strictEqual(planar.height, 3);
+    });
+    
     it('should return an Error object if the passed grid is malformed', function () {
         assert.instanceOf(new Planar(numberGrid), Planar);
         assert.instanceOf(new Planar(stringGrid), Planar);
@@ -46,16 +70,4 @@ describe('Planar(grid)', function () {
         assert.instanceOf(new Planar([1, 2, 3]), Error);
     });
 
-    it('should instantiate without modifying the passed grid', function() {
-        assert.deepEqual(new Planar(numberGrid).grid, numberGrid);
-        assert.deepEqual(new Planar(stringGrid).grid, stringGrid);
-        assert.deepEqual(new Planar(objectGrid).grid, objectGrid);
-        assert.deepEqual(new Planar(mixedGrid).grid, mixedGrid);
-    });
-
-    it('should instantiate with the correct width and height', function() {
-        let planar = new Planar(numberGrid);
-        assert.strictEqual(planar.width, 3);
-        assert.strictEqual(planar.height, 3);
-    });
 });
