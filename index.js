@@ -20,14 +20,29 @@ let Planar = function (grid) {
  * 
  * @param {any} row
  * @param {any} col
- * @returns The value of the cell.
- * @throws 
+ * @returns The value of the cell, or an Error object if indices are out of bounds.
  */
 Planar.prototype.get = function (row, col) {
     try {
         return this.grid[row][col];
     } catch (err) {
-        return new Error(`Out of bounds planar access in row ${row} col ${col}.`);
+        return new Error(`Out of bounds cell access in row ${row} col ${col}`);
+    }
+}
+
+/**
+ * Sets the value of a cell.
+ * 
+ * @param {any} row 
+ * @param {any} col 
+ * @param {any} value The new value of the specified cell.
+ * @returns An Error object if the indicies are out of bounds, otherwise null.
+ */
+Planar.prototype.set = function (row, col, value) {
+    try {
+        this.grid[row][col] = this[row][col] = value;
+    } catch (err) {
+        return new Error(`Out of bounds cell mutation in row ${row} col ${col} for value ${value}`);
     }
 }
 
