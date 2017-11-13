@@ -4,8 +4,14 @@ let Planar = function (grid) {
     if (!Array.isArray(grid) || !Array.isArray(grid[0])) {
         return new Error(`Argument is not a valid 2d array.`);
     }
+
     this.width = grid[0].length;
     this.height = grid.length;
+
+    for (let rowNum = 0; rowNum < this.height; rowNum++) {
+        this[rowNum] = grid[rowNum];
+    }
+    
     this.grid = grid;
 };
 
