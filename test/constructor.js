@@ -37,6 +37,7 @@ describe('Planar(grid)', function () {
     });
 
     it('should instantiate without modifying the passed grid', function() {
+        assert.deepEqual(new Planar([[]]).grid, [[]]);
         assert.deepEqual(new Planar(numberGrid).grid, numberGrid);
         assert.deepEqual(new Planar(stringGrid).grid, stringGrid);
         assert.deepEqual(new Planar(objectGrid).grid, objectGrid);
