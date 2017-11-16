@@ -16,16 +16,19 @@
  */
 let Planar = function (grid) {
     if (!Array.isArray(grid) || !Array.isArray(grid[0])) {
-        return new Error(`Argument is not a valid 2d array.`);
+        return new Error(`Argument is not an array of arrays`);
     }
 
-    this.width = grid[0].length;
-    this.height = grid.length;
+    if (!isRectangular(grid)) {
+        return new Error('Argument does not have a consistent width');
+    }
 
-    for (let rowNum = 0; rowNum < this.height; rowNum++) {
+    for (let rowNum = 0; rowNum < grid.length; rowNum++) {
         this[rowNum] = grid[rowNum];
     }
     
+    this.width = grid[0].length;
+    this.height = grid.length;
     this.grid = grid;
 };
 
@@ -58,6 +61,25 @@ Planar.prototype.set = function (row, col, value) {
     } catch (err) {
         return new Error(`Out of bounds cell mutation in row ${row} col ${col} for value ${value}`);
     }
+}
+
+/**
+ * Determines whether the supplied grid is rectangular or not.
+ * Assumes that the grid contains at least one internal array.
+ * 
+ * @param {any} grid 
+ * @returns True if rectangular, false if not.
+ */
+function isRectangular(grid) {
+    let width = grid[0].length;
+
+    for (let rowNum = 0; rowNum < grid.length; rowNum++) {
+        if (grid[rowNum].length !== width) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 module.exports = Planar;
