@@ -1,5 +1,9 @@
 'use strict';
 
+/*
+    Basic functions
+ */
+
 /**
  * Constructs a Planar with three members: width, height, and grid.
  * 
