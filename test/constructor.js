@@ -8,12 +8,18 @@ const expect = chai.expect;
 const should = chai.should;
 
 describe('Planar(grid)', function () {
+    let invalidGrid = undefined;
     let numberGrid = undefined;
     let stringGrid = undefined;
     let objectGrid = undefined;
     let mixedGrid = undefined;
 
     before(function () {
+        invalidGrid = [
+            [1, 2, 3, 4],
+            [4, 5, 6],
+            [8, 9, 10]
+        ];
         numberGrid = [
             [1, 2, 3],
             [4, 5, 6],
@@ -36,8 +42,13 @@ describe('Planar(grid)', function () {
         ];
     });
 
-    it('should instantiate without modifying the passed grid', function() {
+    it('should instantiate only when passed a valid grid', function () {
         assert.deepEqual(new Planar([[]]).grid, [[]]);
+        assert.deepEqual(new Planar(numberGrid).grid, numberGrid);
+        assert.instanceOf(new Planar(invalidGrid), Error);
+    });
+
+    it('should instantiate without modifying the passed grid', function() {
         assert.deepEqual(new Planar(numberGrid).grid, numberGrid);
         assert.deepEqual(new Planar(stringGrid).grid, stringGrid);
         assert.deepEqual(new Planar(objectGrid).grid, objectGrid);
