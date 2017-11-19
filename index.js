@@ -71,6 +71,15 @@ Planar.prototype.dimen = function () {
 }
 
 /**
+ * Get the area of the Planar.
+ * 
+ * @returns An integer representing the area of the Planar.
+ */
+Planar.prototype.area = function () {
+    return this.width * this.height;
+}
+
+/**
  * Determines whether the supplied grid is rectangular or not.
  * Assumes that the grid contains at least one internal array.
  * 
