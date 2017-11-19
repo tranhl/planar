@@ -1,18 +1,16 @@
 'use strict';
 
 /**
- * Constructs a Planar object with three members: width, height, and grid.
+ * Constructs a Planar with three members: width, height, and grid.
  * 
- * width and height provide the width and height of the planar respectively.
- * grid holds the 2d array that the Planar object wraps around.
+ * width and height provide the width and height of the Planar respectively.
+ * grid holds the 2d array that the Planar wraps around.
  * 
  * All three members should NOT be mutated directly, as methods depend on their values in relation
  * to each other; doing so will produce unexpected results when calling any methods.
  * 
- * Accessing members, however, is safe, and is an alternative to calling height() or width().
- * 
  * @param {any} grid 
- * @returns The Planar object.
+ * @returns A Planar object instance.
  */
 let Planar = function (grid) {
     if (!Array.isArray(grid) || !Array.isArray(grid[0])) {
@@ -58,6 +56,15 @@ Planar.prototype.set = function (row, col, value) {
     } catch (err) {
         return new Error(`Out of bounds cell mutation in row ${row} col ${col} for value ${value}`);
     }
+}
+
+/**
+ * Get the dimensions of the Planar as an array of the format [width, height].
+ * 
+ * @returns The array holding the dimensions of the Planar.
+ */
+Planar.prototype.dimen = function () {
+    return [this.width, this.height];
 }
 
 module.exports = Planar;
