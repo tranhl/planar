@@ -5,7 +5,7 @@
  */
 
 /**
- * Constructs a Planar with three members: width, height, and grid.
+ * Constructs a Planar with two members: width, height.
  * 
  * width and height provide the width and height of the Planar respectively.
  * grid holds the 2d array that the Planar wraps around.
@@ -17,21 +17,23 @@
  * @returns A Planar object instance.
  */
 let Planar = function (grid) {
+    // 2d array check
     if (!Array.isArray(grid) || !Array.isArray(grid[0])) {
-        return new Error(`Argument is not an array of arrays`);
+        return new Error(`Argument is not a 2d array`);
     }
 
+    // Rectaunglarity check 
     if (!isRectangular(grid)) {
-        return new Error('Argument does not have a consistent width');
+        return new Error('Argument is not rectangular');
     }
 
+    // Store 2d array as internal grid
     for (let rowNum = 0; rowNum < grid.length; rowNum++) {
         this[rowNum] = grid[rowNum];
     }
     
     this.width = grid[0].length;
     this.height = grid.length;
-    this.grid = grid;
 };
 
 /** 
@@ -43,7 +45,7 @@ let Planar = function (grid) {
  */
 Planar.prototype.get = function (row, col) {
     try {
-        return this.grid[row][col];
+        return this[row][col];
     } catch (err) {
         return new Error(`Out of bounds cell access in row ${row} col ${col}`);
     }
@@ -59,9 +61,9 @@ Planar.prototype.get = function (row, col) {
  */
 Planar.prototype.set = function (row, col, value) {
     try {
-        this.grid[row][col] = this[row][col] = value;
+        this[row][col] = value;
     } catch (err) {
-        return new Error(`Out of bounds cell mutation in row ${row} col ${col} for value ${value}`);
+        return new Error(`Out of bounds cell assignment in row ${row} col ${col} for value ${value}`);
     }
 }
 
@@ -81,6 +83,21 @@ Planar.prototype.dimen = function () {
  */
 Planar.prototype.area = function () {
     return this.width * this.height;
+}
+
+/**
+ * Get the internal 2d array of the Planar.
+ * 
+ * @returns The Planar's internal 2d array.
+ */
+Planar.prototype.grid = function () {
+    let output = [];
+
+    for (let rowNum = 0; rowNum < this.height; rowNum++) {
+        output.push(this[rowNum]);
+    }
+
+    return output;
 }
 
 /**
