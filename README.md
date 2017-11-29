@@ -32,6 +32,10 @@ console.log(planar.area()); // 9
 To access cell values, use either the provided `get()` method or array syntax (`planar[row][col]`):
 
 ```js
+let planar = new Planar([
+    [1, 2],
+    [3, 4]
+]);
 console.log(planar.get(1, 1)); // 1
 console.log(planar[1][1]); // 1
 ```
@@ -48,17 +52,22 @@ console.log(planar[1][1]); // 'b'
 
 ### Usage Constraints
 
-When instantiating a Planar object, only 2d arrays (grids) will be accepted. This means that at minimum, you must pass in an array within an array to the constructor. 
-
-When attempting to construct a Planar object with an invalid argument, an Error object will be returned instead of a Planar instance:
+To create a Planar object, you must pass in a rectangular 2d array. When attempting to construct a Planar object with an invalid argument, an Error object will be returned instead of a Planar instance:
 
 ```js
 let grid1 = [1];
 let planar1 = new Planar(grid1);
-console.log(instanceof planar1); // Error
+console.log(instanceof planar1); // Error (not a 2d array)
 
-let grid2 = [[]];
+let grid2 = [
+    [1, 2, 3],
+    [4, 5, 6, 7]
+];
 let planar2 = new Planar(grid2);
+console.log(instanceof planar2) // Error (not rectangular)
+
+let grid3 = [[]];
+let planar3 = new Planar(grid2);
 console.log(instanceof planar2); // Planar
 ```
 
@@ -72,7 +81,7 @@ The following list provides basic details on what methods are provided by the Pl
 
 `set(row, col)` - Sets the value of a cell.
 
-`grid()` - Get the Planar's internal 2d array.
+`grid()` - Get the internal 2d array of the Planar.
 
 `dimen()` - Get the dimensions of the Planar as an array of the format [width, height].
 
