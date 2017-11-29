@@ -43,16 +43,16 @@ describe('Planar(grid)', function () {
     });
 
     it('should instantiate only when passed a valid grid', function () {
-        assert.deepEqual(new Planar([[]]).grid, [[]]);
-        assert.deepEqual(new Planar(numberGrid).grid, numberGrid);
+        assert.deepEqual(new Planar([[]]).grid(), [[]]);
+        assert.deepEqual(new Planar(numberGrid).grid(), numberGrid);
         assert.instanceOf(new Planar(invalidGrid), Error);
     });
 
     it('should instantiate without modifying the passed grid', function() {
-        assert.deepEqual(new Planar(numberGrid).grid, numberGrid);
-        assert.deepEqual(new Planar(stringGrid).grid, stringGrid);
-        assert.deepEqual(new Planar(objectGrid).grid, objectGrid);
-        assert.deepEqual(new Planar(mixedGrid).grid, mixedGrid);
+        assert.deepEqual(new Planar(numberGrid).grid(), numberGrid);
+        assert.deepEqual(new Planar(stringGrid).grid(), stringGrid);
+        assert.deepEqual(new Planar(objectGrid).grid(), objectGrid);
+        assert.deepEqual(new Planar(mixedGrid).grid(), mixedGrid);
     });
 
     it('should allow bracket syntax to access grid values', function () {
@@ -81,5 +81,4 @@ describe('Planar(grid)', function () {
         assert.instanceOf(new Planar({}), Error);
         assert.instanceOf(new Planar([1, 2, 3]), Error);
     });
-
 });
