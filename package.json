@@ -1,6 +1,6 @@
 {
   "name": "planar",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A wrapper object for 2d arrays that provides a plethora of useful methods.",
   "main": "index.js",
   "scripts": {
