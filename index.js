@@ -1,7 +1,7 @@
 'use strict';
 
 /*
-    Basic functions
+    Basic methods
  */
 
 /**
@@ -10,8 +10,8 @@
  * width and height provide the width and height of the Planar respectively.
  * grid holds the 2d array that the Planar wraps around.
  * 
- * All three members should NOT be mutated directly, as methods depend on their values in relation
- * to each other; doing so will produce unexpected results when calling any methods.
+ * All two members should NOT be mutated directly, as methods depend on their values in relation
+ * to each other; doing so wi`ll produce unexpected results when calling any methods.
  * 
  * @param {any} grid 
  * @returns A Planar object instance.
@@ -117,6 +117,44 @@ function isRectangular(grid) {
     }
 
     return true;
+}
+
+/*
+    Essential methods
+ */
+
+/**
+ * Extracts a rectangular subset of the Planar.
+ * Does not overstep the boundaries of the Planar.
+ * 
+ * @param {any} row The row index to start cropping from.
+ * @param {any} col The column index to start cropping from.
+ * @param {any} width The width of the resulting grid.
+ * @param {any} height The height of the resulting grid.
+ * @returns The cropped grid, or an Error object if overstepping occurs.
+ */
+Planar.prototype.crop = function (row, col, width, height) {
+    if (row + height > this.height) {
+        return new Error(`Row overstep detected: starting row index ${row}, output height ${height}, Planar height ${this.height}`);
+    }
+
+    if (col + width > this.width) {
+        return new Error(`Column overstep detected: starting column index ${col}, output width ${width}, Planar width ${this.width}`);        
+    }
+
+    let output = [];
+
+    for (let rowNum = row; rowNum < row + height; rowNum++) {
+        let rowBuffer = [];
+
+        for (let colNum = col; colNum < col + width; colNum++) {
+            rowBuffer.push(this[rowNum][colNum]);
+        }
+
+        output.push(rowBuffer);
+    }
+
+    return output;
 }
 
 module.exports = Planar;
