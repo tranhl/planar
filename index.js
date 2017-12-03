@@ -5,13 +5,7 @@
  */
 
 /**
- * Constructs a Planar with two members: width, height.
- * 
- * width and height provide the width and height of the Planar respectively.
- * grid holds the 2d array that the Planar wraps around.
- * 
- * All three members should NOT be mutated directly, as methods depend on their values in relation
- * to each other; doing so will produce unexpected results when calling any methods.
+ * Constructs a Planar object.
  * 
  * @param {any} grid 
  * @returns A Planar object instance.
