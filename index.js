@@ -1,15 +1,7 @@
 'use strict';
 
 /**
- * Constructs a Planar object with three members: width, height, and grid.
- * 
- * width and height provide the width and height of the planar respectively.
- * grid holds the 2d array that the Planar object wraps around.
- * 
- * All three members should NOT be mutated directly, as methods depend on their values in relation
- * to each other; doing so will produce unexpected results when calling any methods.
- * 
- * Accessing members, however, is safe, and is an alternative to calling height() or width().
+ * Constructs a Planar object.
  * 
  * @param {any} grid 
  * @returns The Planar object.
