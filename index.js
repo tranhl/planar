@@ -1,8 +1,7 @@
 'use strict';
 
-/*
-    Basic methods
- */
+const ROTATE_CW = 'ROTATE_CW';
+const ROTATE_ACW = 'ROTATE_ACW';
 
 /**
  * Constructs a Planar object.
@@ -29,6 +28,10 @@ let Planar = function (grid) {
     this.width = grid[0].length;
     this.height = grid.length;
 };
+
+/*
+    Basic methods
+ */
 
 /** 
  * Get the value of a cell.
@@ -182,4 +185,70 @@ Planar.prototype.harvest = function (row, col, width, height) {
     return output;
 }
 
+Planar.prototype.rotate = function (direction) {
+    switch (direction) {
+        case ROTATE_CW: {
+            rotateClockwise.apply(this);
+            return this;
+        }
+        case ROTATE_ACW: {
+            rotateAntiClockwise.apply(this);
+            return this;
+        }
+        default:
+            return new Error('Direction not specified.');
+    }
+};
+
+function rotateClockwise() {
+    let buffer = [...Array(this.width).keys()].map(i => Array(this.height));
+    
+    for (let colNum = 0; colNum < this.width; colNum++) {
+        for (let rowNum = this.height - 1; rowNum >= 0; rowNum--) {
+            buffer[(colNum + this.width) % this.width][(rowNum + 1) * (this.height - 1) % this.height] = this[rowNum][colNum];
+        }
+    }
+    
+    clearInternalGrid.apply(this);
+    copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
+function rotateAntiClockwise() {
+    let buffer = [...Array(this.width).keys()].map(i => Array(this.height));
+    
+    for (let colNum = this.width - 1; colNum >= 0; colNum--) {
+        for (let rowNum = 0; rowNum < this.height; rowNum++) {
+            buffer[(colNum + 1) * (this.width - 1) % this.width][(rowNum + this.height) % this.height] = this[rowNum][colNum];
+        }
+    }
+    
+    clearInternalGrid.apply(this);
+    copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
+function clearInternalGrid() {
+    for (let rowNum = 0; rowNum < this.height; rowNum++) {
+        delete this[rowNum];
+    }
+
+    delete this.width;
+    delete this.height;
+}
+
+function copyBufferToInternalGrid(buffer) {
+    for (let rowNum = 0; rowNum < buffer.length; rowNum++) {
+        let row = buffer[rowNum];
+        this[rowNum] = [];
+
+        for (let colNum = 0; colNum < row.length; colNum++) {
+            this[rowNum][colNum] = buffer[rowNum][colNum];
+        }
+    }
+
+    this.width = buffer[0].length;
+    this.height = buffer.length;
+}
+
 module.exports = Planar;
+module.exports.ROTATE_CW = ROTATE_CW;
+module.exports.ROTATE_ACW = ROTATE_ACW;
