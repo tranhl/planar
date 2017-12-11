@@ -151,4 +151,35 @@ Planar.prototype.crop = function (row, col, width, height) {
     return output;
 }
 
+/**
+ * Extracts a rectangular subset of the Planar.
+ * Oversteps the boundaries of the Planar, filling missing values with nulls.
+ * `
+ * @param {any} row The row index to start cropping from.
+ * @param {any} col The column index to start cropping from.
+ * @param {any} width The width of the resulting grid.
+ * @param {any} height The height of the resulting grid.
+ * @returns The cropped grid.
+ */
+Planar.prototype.harvest = function (row, col, width, height) {
+    let output = [];
+
+    for (let rowNum = row; rowNum < row + height; rowNum++) {
+        let rowBuffer = [];
+
+        for (let colNum = col; colNum < col + width; colNum++) {
+            if (!this.hasOwnProperty(rowNum) || colNum < 0 || colNum >= this[rowNum].length) {
+                rowBuffer.push(null);
+                continue;
+            }
+
+            rowBuffer.push(this[rowNum][colNum]);
+        }
+        
+        output.push(rowBuffer);
+    }
+
+    return output;
+}
+
 module.exports = Planar;
