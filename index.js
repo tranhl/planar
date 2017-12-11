@@ -10,17 +10,14 @@ const ROTATE_ACW = 'ROTATE_ACW';
  * @returns A Planar object instance.
  */
 let Planar = function (grid) {
-    // 2d array check
     if (!Array.isArray(grid) || !Array.isArray(grid[0])) {
         return new Error(`Argument is not a 2d array`);
     }
 
-    // Rectaunglarity check 
     if (!isRectangular(grid)) {
         return new Error('Argument is not rectangular');
     }
 
-    // Store 2d array as internal grid
     for (let rowNum = 0; rowNum < grid.length; rowNum++) {
         this[rowNum] = grid[rowNum];
     }
