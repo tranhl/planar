@@ -157,7 +157,7 @@ Planar.prototype.crop = function (row, col, width, height) {
 /**
  * Extracts a rectangular subset of the Planar.
  * Oversteps the boundaries of the Planar, filling missing values with nulls.
- * `
+ * 
  * @param {any} row The row index to start cropping from.
  * @param {any} col The column index to start cropping from.
  * @param {any} width The width of the resulting grid.
@@ -185,6 +185,13 @@ Planar.prototype.harvest = function (row, col, width, height) {
     return output;
 }
 
+/**
+ * Rotates the Planar 90 degrees clockwise or anticlockwise.
+ * Specify direction using the ROTATE_CW or ROTATE_ACW package constants.
+ * 
+ * @param {any} direction The direction to rotate the Planar.
+ * @returns A reference to the Planar, or an Error object when a direction is not specified.
+ */
 Planar.prototype.rotate = function (direction) {
     switch (direction) {
         case ROTATE_CW: {
