@@ -2,6 +2,8 @@
 
 const ROTATE_CW = 'ROTATE_CW';
 const ROTATE_ACW = 'ROTATE_ACW';
+const AXIS_X = 'X';
+const AXIS_Y = 'Y';
 
 /**
  * Constructs a Planar object.
@@ -205,7 +207,7 @@ Planar.prototype.rotate = function (direction) {
 };
 
 function rotateClockwise() {
-    let buffer = [...Array(this.width).keys()].map(i => Array(this.height));
+    let buffer = buildEmptyGrid(this.height, this.width);
     
     for (let colNum = 0; colNum < this.width; colNum++) {
         for (let rowNum = this.height - 1; rowNum >= 0; rowNum--) {
@@ -217,8 +219,12 @@ function rotateClockwise() {
     copyBufferToInternalGrid.apply(this, [buffer]);
 }
 
+function buildEmptyGrid(width, height) {
+    return [...Array(height).keys()].map(i => Array(width));
+}
+
 function rotateAntiClockwise() {
-    let buffer = [...Array(this.width).keys()].map(i => Array(this.height));
+    let buffer = buildEmptyGrid(this.height, this.width);
     
     for (let colNum = this.width - 1; colNum >= 0; colNum--) {
         for (let rowNum = 0; rowNum < this.height; rowNum++) {
@@ -253,6 +259,63 @@ function copyBufferToInternalGrid(buffer) {
     this.height = buffer.length;
 }
 
+/**
+ * Flips the Planar's internal grid over the provided axis.
+ * 
+ * @param {any} axis 
+ * @returns 
+ */
+Planar.prototype.flip = function(axis) {
+    switch (axis) {
+        case AXIS_X: {
+            flipHorizontally.apply(this);
+            return this;
+        }
+        case AXIS_Y: {
+            flipVertically.apply(this);
+            return this;
+        }
+        default:
+            return new Error('Axis not specified.');
+    }
+};
+
+function flipHorizontally() {
+    let buffer = [];
+
+    for (let rowNum = this.height - 1; rowNum >= 0; rowNum--) {
+        let rowBuffer = [];
+
+        for (let colNum = 0; colNum < this.width; colNum++) {
+            rowBuffer.push(this[rowNum][colNum]);    
+        }
+
+        buffer.push(rowBuffer);
+    }
+
+    clearInternalGrid.apply(this);
+    copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
+function flipVertically() {
+    let buffer = [];
+
+    for (let rowNum = 0; rowNum < this.height; rowNum++) {
+        let rowBuffer = [];
+
+        for (let colNum = this.width - 1; colNum >= 0; colNum--) {
+            rowBuffer.push(this[rowNum][colNum]);    
+        }
+
+        buffer.push(rowBuffer);
+    }
+
+    clearInternalGrid.apply(this);
+    copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
 module.exports = Planar;
 module.exports.ROTATE_CW = ROTATE_CW;
 module.exports.ROTATE_ACW = ROTATE_ACW;
+module.exports.AXIS_X = AXIS_X;
+module.exports.AXIS_Y = AXIS_Y;
