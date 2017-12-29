@@ -380,6 +380,28 @@ Planar.prototype.fill = function (value) {
     return this;
 }
 
+Planar.prototype.fillArea = function (value, row, col, height, width) {
+    if (arguments.length !== 5) {
+        return new Error(`Expecting 5 arguments, got ${arguments.length} instead`);
+    }
+
+    if (row + height > this.height || row < 0) {
+        return new Error(`Row overstep detected: starting row index ${row}, output height ${height}, Planar height ${this.height}`);
+    }
+
+    if (col + width > this.width || col < 0) {
+        return new Error(`Column overstep detected: starting column index ${col}, output width ${width}, Planar width ${this.width}`);        
+    }
+
+    for (let rowNum = row; rowNum < row + height; rowNum++) {
+        for (let colNum = col; colNum < col + width; colNum++) {
+            this[rowNum][colNum] = value;
+        }
+    }
+
+    return this;
+}
+
 module.exports = Planar;
 module.exports.ROTATE_CW = ROTATE_CW;
 module.exports.ROTATE_ACW = ROTATE_ACW;
