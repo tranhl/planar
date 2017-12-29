@@ -366,6 +366,20 @@ function panVertically(steps) {
     copyBufferToInternalGrid.apply(this, [buffer]);
 }
 
+Planar.prototype.fill = function (value) {
+    if (value === undefined) {
+        return new Error('Fill value not provided.');
+    }
+    
+    for (let rowNum = 0; rowNum < this.height; rowNum++) {
+        for (let colNum = 0; colNum < this.width; colNum++) {
+            this[rowNum][colNum] = value;
+        }
+    }
+
+    return this;
+}
+
 module.exports = Planar;
 module.exports.ROTATE_CW = ROTATE_CW;
 module.exports.ROTATE_ACW = ROTATE_ACW;
