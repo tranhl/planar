@@ -21,7 +21,7 @@ let Planar = function (grid) {
     }
 
     for (let rowNum = 0; rowNum < grid.length; rowNum++) {
-        this[rowNum] = grid[rowNum];
+        this[rowNum] = grid[rowNum].slice(0);
     }
     
     this.width = grid[0].length;
