@@ -262,7 +262,7 @@ function copyBufferToInternalGrid(buffer) {
 /**
  * Flips the Planar's internal grid over the provided axis.
  * 
- * @param {any} axis 
+ * @param {any} axis
  * @returns 
  */
 Planar.prototype.flip = function(axis) {
@@ -308,6 +308,58 @@ function flipVertically() {
         }
 
         buffer.push(rowBuffer);
+    }
+
+    clearInternalGrid.apply(this);
+    copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
+Planar.prototype.pan = function (axis, steps) {
+    if (arguments.length !== 2) {
+        return new Error(`Incorrect arguments length: expecting 2, got ${arguments.length}`);
+    }
+
+    if (typeof steps !== 'number') {
+        return new Error('Provided steps value is non-numerical');
+    }
+
+    if (steps === 0) {
+        return new Error('Provided steps value should be non-zero.');
+    }
+
+    if (axis === Planar.AXIS_X) {
+        panHorizontally.apply(this, [steps]);
+        return this;
+    }
+
+    if (axis === Planar.AXIS_Y) {
+        panVertically.apply(this, [steps]);
+        return this;
+    }
+}
+
+function panHorizontally(steps) {
+    let buffer = buildEmptyGrid(this.width, this.height);
+
+    for (let rowNum = 0; rowNum < this.height; rowNum++) {
+        for (let colNum = 0; colNum < this.width; colNum++) {
+            let pannedColNum = (colNum + steps + this.width) % this.width;
+            buffer[rowNum][pannedColNum] = this[rowNum][colNum];
+        }
+    }
+
+    clearInternalGrid.apply(this);
+    copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
+function panVertically(steps) {
+    let buffer = buildEmptyGrid(this.width, this.height);
+
+    for (let rowNum = 0; rowNum < this.height; rowNum++) {
+        for (let colNum = 0; colNum < this.width; colNum++) {
+            let pannedRowNum = (rowNum - steps + this.height) % this.height;
+            buffer[pannedRowNum][colNum] = this[rowNum][colNum];
+        }
     }
 
     clearInternalGrid.apply(this);
