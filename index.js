@@ -4,6 +4,12 @@ const ROTATE_CW = 'ROTATE_CW';
 const ROTATE_ACW = 'ROTATE_ACW';
 const AXIS_X = 'X';
 const AXIS_Y = 'Y';
+const SIDES = {
+    TOP: 'side.top',
+    BOTTOM: 'side.bottom',
+    LEFT: 'side.left',
+    RIGHT: 'side.right',
+};
 
 /**
  * Constructs a Planar object.
@@ -90,7 +96,7 @@ Planar.prototype.grid = function () {
     let output = [];
 
     for (let rowNum = 0; rowNum < this.height; rowNum++) {
-        output.push(this[rowNum]);
+        output.push(this[rowNum].slice(0));
     }
 
     return output;
@@ -402,8 +408,98 @@ Planar.prototype.fillArea = function (value, row, col, height, width) {
     return this;
 }
 
+Planar.prototype.pad = function (value, side, times) {
+    // validation cases
+    // args < 1
+    // side not found
+
+    if (arguments < 2) {
+        return new Error(`Expecting at least 2 arguments, got ${arguments.length} instead`);
+    }
+
+    switch (side) {
+        case Planar.SIDES.TOP: {
+            padTop.apply(this, [value, times]);
+            return this;
+        }
+        case Planar.SIDES.BOTTOM: {
+            padBottom.apply(this, [value, times]);
+            return this;
+        }
+        case Planar.SIDES.LEFT: {
+            padLeft.apply(this, [value, times]);
+            return this;
+        }
+        case Planar.SIDES.RIGHT: {
+            padRight.apply(this, [value, times]);
+            return this;
+        }
+        default:
+            return new Error('Invalid side value provided');
+    }
+}
+
+function padTop(value, times) {
+    let buffer = this.grid();
+    let row = Array(this.width);
+
+    for (let colNum = 0; colNum < row.length; colNum++) {
+        row[colNum] = value;
+    }
+
+    for (let i = 0; i < (times || 1); i++) {
+        buffer.unshift(row);
+    }
+
+    clearInternalGrid.apply(this);
+    copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
+function padBottom(value, times) {
+    let buffer = this.grid();
+    let row = Array(this.width);
+
+    for (let colNum = 0; colNum < row.length; colNum++) {
+        row[colNum] = value;
+    }
+
+    for (let i = 0; i < (times || 1); i++) {
+        buffer.push(row);
+    }
+
+    clearInternalGrid.apply(this);
+    copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
+function padLeft(value, times) {
+    let buffer = this.grid();
+
+    for (let i = 0; i < (times || 1); i++) {
+        for (let rowNum = 0; rowNum < this.height; rowNum++) {
+            buffer[rowNum].unshift(value);
+        }
+    }
+
+    clearInternalGrid.apply(this);
+    copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
+function padRight(value, times) {
+    let buffer = this.grid();
+
+    for (let i = 0; i < (times || 1); i++) {
+        for (let rowNum = 0; rowNum < this.height; rowNum++) {
+            buffer[rowNum].push(value);
+        }
+    }
+
+    clearInternalGrid.apply(this);
+    copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
 module.exports = Planar;
 module.exports.ROTATE_CW = ROTATE_CW;
 module.exports.ROTATE_ACW = ROTATE_ACW;
 module.exports.AXIS_X = AXIS_X;
 module.exports.AXIS_Y = AXIS_Y;
+module.exports.SIDES = SIDES;
