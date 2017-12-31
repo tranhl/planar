@@ -409,28 +409,24 @@ Planar.prototype.fillArea = function (value, row, col, height, width) {
 }
 
 Planar.prototype.pad = function (value, side, times) {
-    // validation cases
-    // args < 1
-    // side not found
-
     if (arguments < 2) {
         return new Error(`Expecting at least 2 arguments, got ${arguments.length} instead`);
     }
 
     switch (side) {
-        case Planar.SIDES.TOP: {
+        case SIDES.TOP: {
             padTop.apply(this, [value, times]);
             return this;
         }
-        case Planar.SIDES.BOTTOM: {
+        case SIDES.BOTTOM: {
             padBottom.apply(this, [value, times]);
             return this;
         }
-        case Planar.SIDES.LEFT: {
+        case SIDES.LEFT: {
             padLeft.apply(this, [value, times]);
             return this;
         }
-        case Planar.SIDES.RIGHT: {
+        case SIDES.RIGHT: {
             padRight.apply(this, [value, times]);
             return this;
         }
@@ -495,6 +491,93 @@ function padRight(value, times) {
 
     clearInternalGrid.apply(this);
     copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
+Planar.prototype.trim = function (side, times) {
+    if (arguments < 1) {
+        return new Error(`Expecting at least 1 argument, got ${arguments.length} instead`);
+    }
+
+    switch (side) {
+        case SIDES.TOP: {
+            trimTop.apply(this, [times]);
+            return this;
+        }
+        case SIDES.BOTTOM: {
+            trimBottom.apply(this, [times]);
+            return this;
+        }
+        case SIDES.LEFT: {
+            trimLeft.apply(this, [times]);
+            return this;
+        }
+        case SIDES.RIGHT: {
+            trimRight.apply(this, [times]);
+            return this;
+        }
+        default:
+            return new Error('Invalid side value provided');    
+    }
+}
+
+function trimTop(times) {
+    let buffer = this.grid();
+    let trimCount = times || 1;
+
+    if (trimCount > this.height) {
+        throw new Error('Cannot trim more than the planar\'s height');
+    }
+
+    for (let i = 0; i < trimCount; i++) {
+        buffer.shift();
+    }
+
+    clearInternalGrid.apply(this);
+    copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
+function trimBottom(times) {
+    let buffer = this.grid();
+    let trimCount = times || 1;
+
+    if (trimCount > this.height) {
+        throw new Error('Cannot trim more than the planar\'s height');
+    }
+
+    for (let i = 0; i < trimCount; i++) {
+        buffer.pop();
+    }
+
+    clearInternalGrid.apply(this);
+    copyBufferToInternalGrid.apply(this, [buffer]);
+}
+
+function trimLeft(times) {
+    let trimCount = times || 1;
+
+    if (trimCount > this.width) {
+        throw new Error('Cannot trim more than the planar\'s width');
+    }
+
+    for (let i = 0; i < trimCount; i++) {
+        for (let rowNum = 0; rowNum < this.height; rowNum++) {
+            this[rowNum].shift();    
+        }
+    }
+}
+
+function trimRight(times) {
+    let trimCount = times || 1;
+
+    if (trimCount > this.width) {
+        throw new Error('Cannot trim more than the planar\'s width');
+    }
+
+    for (let i = 0; i < trimCount; i++) {
+        for (let rowNum = 0; rowNum < this.height; rowNum++) {
+            this[rowNum].pop();    
+        }
+    }
 }
 
 module.exports = Planar;
