@@ -83,13 +83,13 @@ describe('Planar.trim(side, [times])', function () {
         assert.instanceOf(new Planar(grid).trim(), Error);
     });
 
-    it('should throw an Error when times is greater than the planar height', function () {
-        expect(() => new Planar(grid).trim(Planar.SIDES.TOP, 5)).to.throw();
-        expect(() => new Planar(grid).trim(Planar.SIDES.BOTTOM, 5)).to.throw();
+    it('should throw an Error when times is greater or equal to the planar height', function () {
+        expect(() => new Planar(grid).trim(Planar.SIDES.TOP, 4)).to.throw();
+        expect(() => new Planar(grid).trim(Planar.SIDES.BOTTOM, 4)).to.throw();
     });
     
-    it('should throw an Error when times is greater than the planar width', function () {
-        expect(() => new Planar(grid).trim(Planar.SIDES.LEFT, 5)).to.throw();
-        expect(() => new Planar(grid).trim(Planar.SIDES.RIGHT, 5)).to.throw();
+    it('should throw an Error when times is greater or equal to the planar width', function () {
+        expect(() => new Planar(grid).trim(Planar.SIDES.LEFT, 4)).to.throw();
+        expect(() => new Planar(grid).trim(Planar.SIDES.RIGHT, 4)).to.throw();
     });
 });
