@@ -524,14 +524,14 @@ function trimTop(times) {
     let buffer = this.grid();
     let trimCount = times || 1;
 
-    if (trimCount > this.height) {
+    if (trimCount >= this.height) {
         throw new Error('Cannot trim more than the planar\'s height');
     }
 
     for (let i = 0; i < trimCount; i++) {
         buffer.shift();
     }
-
+    
     clearInternalGrid.apply(this);
     copyBufferToInternalGrid.apply(this, [buffer]);
 }
@@ -540,7 +540,7 @@ function trimBottom(times) {
     let buffer = this.grid();
     let trimCount = times || 1;
 
-    if (trimCount > this.height) {
+    if (trimCount >= this.height) {
         throw new Error('Cannot trim more than the planar\'s height');
     }
 
@@ -555,7 +555,7 @@ function trimBottom(times) {
 function trimLeft(times) {
     let trimCount = times || 1;
 
-    if (trimCount > this.width) {
+    if (trimCount >= this.width) {
         throw new Error('Cannot trim more than the planar\'s width');
     }
 
@@ -569,7 +569,7 @@ function trimLeft(times) {
 function trimRight(times) {
     let trimCount = times || 1;
 
-    if (trimCount > this.width) {
+    if (trimCount >= this.width) {
         throw new Error('Cannot trim more than the planar\'s width');
     }
 
